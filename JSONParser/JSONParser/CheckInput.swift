@@ -37,5 +37,9 @@ struct CheckInput {
         return hasWhiteSpace(userInput) && hasSqaureBracket(userInput)
     }
     
-   
+    // 사용자의 입력에 { } 확인
+    static func hasCurlyBrace(_ input: String) -> Bool {
+        return input.contains("{") && input.contains("}")
+        
+    }
 }
