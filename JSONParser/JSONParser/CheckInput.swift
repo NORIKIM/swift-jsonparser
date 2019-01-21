@@ -28,12 +28,14 @@ struct CheckInput {
     }
     
     // 사용자의 입력 양 끝에 [] 확인
-    private static func hasParentheses(_ input: String) -> Bool {
+    private static func hasSqaureBracket(_ input: String) -> Bool {
         return input.contains("[") && input.contains("]")
     }
 
     // 사용자의 입력이 유효한지 확인
     static func validInput(userInput: String) -> Bool {
-        return hasWhiteSpace(userInput) && hasParentheses(userInput)
+        return hasWhiteSpace(userInput) && hasSqaureBracket(userInput)
     }
+    
+   
 }
