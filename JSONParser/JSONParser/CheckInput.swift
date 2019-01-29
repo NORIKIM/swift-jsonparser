@@ -27,19 +27,22 @@ struct CheckInput {
     // 사용자의 입력에 공백이 있는지 확인
     static func hasWhiteSpace(_ input: String) -> Bool {
         var comma = 0
+        var colon = 0
         var whiteSpace = 0
         
-        for str in input {
-            switch str {
+        for index in input {
+            switch index {
             case ",":
                 comma += 1
+            case ":":
+                colon += 1
             case " ":
                 whiteSpace += 1
             default:
                 break
             }
         }
-        return whiteSpace == comma + 2
+        return whiteSpace == comma + 2 || whiteSpace == (3 * colon) + 2
     }
     
     // 사용자의 입력 양 끝에 [] 확인
@@ -52,22 +55,5 @@ struct CheckInput {
         return input.contains("{") && input.contains("}")
         
     }
-    
-    static func check(_ input: String) {
-        if hasWhiteSpace(input) {
-            if hasCurlyBrace(input) {
-                //makeJsonDic
-                if hasSqaureBracket(input) {
-                    //배열안에 객체 있을 경우 구현
-                }
-            } else {
-                //makeJsonArr
-            }
-        } else {
-            print(ErrorMessage.whiteSpace.description)
-        }
-    }
-    
-    
-    
+
 }
