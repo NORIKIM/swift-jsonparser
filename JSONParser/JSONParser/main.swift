@@ -17,15 +17,15 @@ func main() {
         return
     }
     
+    
     if CheckInput.hasCurlyBrace(input) {
-        _ = RegularExpression.makeJsonDic(split: splitInput)
+        let makeJsonDic = RegularExpression.makeJsonDic(split: splitInput)
+        OutputView.printData(in: makeJsonDic.value, from: splitInput)
     } else {
-        _ = RegularExpression.makeJsonArr(split: splitInput)
+        let makeJsonArr = RegularExpression.makeJsonArr(split: splitInput)
+        OutputView.printData(in: makeJsonArr.values, from: splitInput)
     }
 
-    let regex = RegularExpression.makeJsonArr(split: splitInput)
-        
-    OutputView.printData(in: regex, from: splitInput) // 총 4개의 데이터 중에 숫자 1개, 부울 1개, 문자열 2개가 포함되어 있습니다.
 }
 
 while true {
