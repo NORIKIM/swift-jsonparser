@@ -18,7 +18,7 @@ class JSONArr {
 
 class JSONDic {
     var key = [String]()
-    var value = JSONArr().values
+    var value = [JsonValue]()
     var data = [String : JsonValue]()
     
     init() {
@@ -26,11 +26,6 @@ class JSONDic {
             data[key[i]] = value[i]
         }
     }
-
-//    init(key:String, value:JsonValue) {
-//        self.dic = [key : value]
-//    }
-
 }
 
 // 입력된 데이터의 개수를를 딕셔너리에 저장하여 리턴
@@ -40,8 +35,8 @@ class CountData {
         self.data = ["문자열" : 0, "숫자" : 0, "부울" : 0]
     }
     
-    func countData(in JSON: JSONArr, from splitInput: [String]) -> [String : Int] {
-        for value in JSON.values {
+    func countData(in JSON: [JsonValue], from splitInput: [String]) -> [String : Int] {
+        for value in JSON {
             if value.isSame(val: String.self) {
                 data["문자열"] = data["문자열"]! + 1
             } else if value.isSame(val: Int.self) {
