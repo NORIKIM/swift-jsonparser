@@ -10,7 +10,7 @@ import Foundation
 
 struct RegularExpression {
     private static let typeBoolean = "(false|true)"
-    private static let typeString = "\"{1}+[A-Z0-9a-z]+\"{1}"
+    private static let typeString = "\"{1}+[A-Z0-9a-z\\s]+\"{1}"
     private static let typeNumber = "\\s[0-9]+"
     
     // 입력 문자열에서 정규식으로 문자를 추출해 배열로 리턴
@@ -52,54 +52,47 @@ struct RegularExpression {
     // split 배열에서 큰따옴표가 있는 문자를 찾아서 정상문자열로 만들어 반환
     private static func stringCasting(text: String, regex: String) -> String {
         let matchedRegex = RegularExpression.matches(for: regex, in: text)
-        return matchedRegex[0].components(separatedBy: [" ","\""]).joined()
+        return matchedRegex[0].components(separatedBy: ["\""]).joined()
     }
     
     // 문자열을 정규식으로 검사하기
-    private static func inspectRegex(by text: String) -> [JsonValue] {
-        var data = [JsonValue]()
-        if containsMatch(of: typeNumber, inString: text) {
-            data.append(intCasting(text: text, regex: typeNumber))
-        } else if containsMatch(of: typeBoolean, inString: text) {
-            data.append(boolCasting(text: text, regex: typeBoolean))
-        } else if containsMatch(of: typeString, inString: text) {
-            data.append(stringCasting(text: text, regex: typeString))
-        }
+    static func inspectRegex(by text: String) -> [JsonValue] {
+        var data: [JsonValue] = []
+            if containsMatch(of: typeNumber, inString: text) {
+                data.append(intCasting(text: text, regex: typeNumber))
+            } else if containsMatch(of: typeBoolean, inString: text) {
+                data.append(boolCasting(text: text, regex: typeBoolean))
+            } else if containsMatch(of: typeString, inString: text) {
+                data.append(stringCasting(text: text, regex: typeString))
+            }
         return data
     }
     
     // for문으로 split을 돌면서 각 값을 JSONArr에 넣어 리턴
     static func makeJsonArr(split: [String]) -> JSONArr {
         let data = JSONArr()
-        
-        for index in split {
-            inspectRegex(by: index)
+        for text in split {
+            let jsonValue = inspectRegex(by: text)
+            data.values.append(jsonValue[0])
         }
         return data
     }
  
     // JSONDic에 값 넣어주기
     static func makeJsonDic(split: [String]) -> JSONDic {
-        var data = JSONDic()
-
-        
-        for index in 0 ..< split.count {
-            if split[index].contains(":") {
-                // split의 원소에 접근하여 콜론 앞의 문자열을 JSONDic의 key에 넣는다
-                let key = (NSString(string: ":")).substring(with: NSMakeRange(0, split.count - index))
-                data.key.append(key)
-
-                // inspectRegex로 얻은 jsonValue를 JSONDic의 value에 넣는다
-                let value = (NSString(string: ":")).substring(with: NSMakeRange(split.count - index, split.count - 1))
-                data.value = inspectRegex(by: value)
-            }
+        let data = JSONDic()
+        for indexs in split {
+            // split의 원소에 접근하여 콜론 앞의 문자열을 JSONDic의 key에 넣는다
+            let key = indexs[indexs.index(after: indexs.startIndex) ..< indexs.index(before: indexs.index(of: ":")!)]
+            data.key.append(String(key))
+            
+            // inspectRegex로 얻은 jsonValue를 JSONDic의 value에 넣는다
+            let value = indexs[indexs.index(after: indexs.index(of: ":")!) ... indexs.index(before: indexs.endIndex)]
+            let jsonValue = inspectRegex(by: String(value))
+            data.value.append(jsonValue[0])
         }
       return data
     }
-
-        
-    
+  
 }
-    
-
 
