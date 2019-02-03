@@ -13,7 +13,6 @@ enum ErrorMessage: Error {
     case reEntered
     var description: String {
         switch(self) {
-        case .whiteSpace: return "문자 사이사이 공백을 넣어주세요!"
         case .reEntered: return """
                                 1. 숫자, 문자, 부울만 가능합니다.
                                 2. 입력값 사이사이 공백을 입력합니다.
@@ -53,7 +52,6 @@ struct CheckInput {
     // 사용자의 입력에 { } 확인
     static func hasCurlyBrace(_ input: String) -> Bool {
         return input.contains("{") && input.contains("}")
-        
     }
 
 }
