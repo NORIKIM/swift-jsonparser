@@ -13,7 +13,7 @@ func main() {
     let splitInput = InputView.splitInput(input) // ["{ \"name\" : \"KIM JUNG\"", " \"alias\" : \"JK\"", " \"level\" : 5", " \"married\" : true }"]
     
     guard CheckInput.hasWhiteSpace(input) else {
-        print(ErrorMessage.whiteSpace.description)
+        print(ErrorMessage.reEntered.description)
         return
     }
     
