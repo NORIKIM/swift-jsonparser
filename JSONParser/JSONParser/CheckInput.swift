@@ -9,7 +9,6 @@
 import Foundation
 
 enum ErrorMessage: Error {
-    case whiteSpace
     case reEntered
     var description: String {
         switch(self) {
