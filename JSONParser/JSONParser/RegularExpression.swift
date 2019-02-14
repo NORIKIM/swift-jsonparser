@@ -80,19 +80,21 @@ struct RegularExpression {
  
     // JSONDic에 값 넣어주기
     static func makeJsonDic(split: [String]) -> JSONDic {
-        let data = JSONDic()
+        var dataKey = [String]()
+        var dataValue = [JsonValue]()
+        
         for indexs in split {
             // split의 원소에 접근하여 콜론 앞의 문자열을 JSONDic의 key에 넣는다
             let key = indexs[indexs.index(after: indexs.startIndex) ..< indexs.index(before: indexs.index(of: ":")!)]
-            data.key.append(String(key))
+            dataKey.append(String(key))
             
             // inspectRegex로 얻은 jsonValue를 JSONDic의 value에 넣는다
             let value = indexs[indexs.index(after: indexs.index(of: ":")!) ... indexs.index(before: indexs.endIndex)]
             let jsonValue = inspectRegex(by: String(value))
-            data.value.append(jsonValue[0])
+            dataValue.append(jsonValue[0])
         }
-      return data
+      return JSONDic(key: dataKey, value: dataValue)
     }
-  
+    
 }
 
