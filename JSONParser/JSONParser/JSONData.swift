@@ -13,16 +13,14 @@ class JSONArr {
     
     init(_ values: JsonValue...) {
         self.values = values
-    } 
+    }
 }
 
 class JSONDic {
-    var key = [String]()
-    var value = [JsonValue]()
     var data = [String : JsonValue]()
     
-    init() {
-        for i in 0 ..< min(key.count,value.count) {
+    init(key: [String], value: [JsonValue]) {
+        for i in 0 ..< min(key.count, value.count) {
             data[key[i]] = value[i]
         }
     }
