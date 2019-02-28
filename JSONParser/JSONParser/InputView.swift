@@ -13,7 +13,9 @@ struct InputView {
      input : 
      [ 10, "jk", 4, "314", 99, "crong", false ]
      { "name" : "KIM JUNG", "alias" : "JK", "level" : 5, "married" : true }
+     [ { "name" : "KIM JUNG", "alias" : "JK", "level" : 5, "married" : true }, { "name" : "YOON JISU", "alias" : "crong", "level" : 4, "married" : true } ]
      */
+    
     static func readInput() -> String {
         print("분석할 JSON 데이터를 입력하세요.")
         guard let input = readLine() else {
