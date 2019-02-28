@@ -88,29 +88,16 @@ struct RegularExpression {
         let splitByComma = input.components(separatedBy: ",")
         for inners in splitByComma {
             let splitByColon = inners.components(separatedBy: ":")
-            let key = splitByColon[0]
+            let key = matches(in: splitByColon[0], by: typeString)[0].trimmingCharacters(in: ["\""])
             let value = inspectRegex(by: splitByColon[1])
 
             data.updateValue(value[0], forKey: key)
-        
-            /*
-            // split의 원소에 접근하여 콜론 앞의 문자열을 JSONDic의 key에 넣는다
-            let key = String(inners[inners.index(after: inners.startIndex) ..< inners.index(before: inners.index(of: ":")!)])
-            let jsonKey = stringCasting(text: key, regex: typeString)
-            
-            // inspectRegex로 얻은 jsonValue를 JSONDic의 value에 넣는다
-            let value = inners[inners.index(after: inners.index(of: ":")!) ... inners.index(before: inners.endIndex)]
-            let jsonValue = inspectRegex(by: String(value))
-            
-            data.updateValue(jsonValue[0], forKey: jsonKey)
- */
         }
         return data
     }
     
     static func object(_ input: String, splitInput: [String]) -> JsonCollection? {
         if CheckInput.hasCurlyBrace(input) && CheckInput.hasSqaureBracket(input) == false {
-            print(JSONDic.init(makeJsonDic(input)).data)
             return JSONDic.init(makeJsonDic(input))
         } 
         else if CheckInput.isObjArr(input) {
@@ -121,7 +108,6 @@ struct RegularExpression {
                 jsonDic = makeJsonDic(str)
                 jsonArr.values.append(jsonDic)
             }
-            print(jsonArr.values)
             return jsonArr
         }
         else if CheckInput.isObjArr(input) == false {
@@ -130,7 +116,6 @@ struct RegularExpression {
             for inner in jsonValArr {
                 jsonArr.values.append(inner)
             }
-            print(jsonArr.values)
             return jsonArr
         }
         return nil
