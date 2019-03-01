@@ -12,7 +12,6 @@ struct RegularExpression {
     private static let typeBoolean = "(false|true)"
     private static let typeString = "\"{1}+[A-Z0-9a-z\\s]+\"{1}"
     private static let typeNumber = "\\s[0-9]+|[0-9]+"
-    private static let typeKeyValue = "\"[\\w]+\"\\s*:\\s*[\"\\w\\s]+"
     private static let typeAny = "(\\{(?:(?:\\s*\"[\\w]+\"\\s*:\\s*[\"\\w\\s]+\\s*),*)*\\}|\"[\\w]+\"|[0-9]+|false|true)"
     
     // 입력 문자열에서 정규식으로 문자를 추출해 배열로 리턴
@@ -62,7 +61,7 @@ struct RegularExpression {
     static func inspectRegex(by text: String) -> [JsonValue] {
         var data: [JsonValue] = []
         
-        if containsMatch(of: typeNumber, inString: text) {
+        if containsMatch(of: typeNumber, inString: text) && text.contains("\"") == false {
             data.append(intCasting(text: text, regex: typeNumber))
         } else if containsMatch(of: typeBoolean, inString: text) {
             data.append(boolCasting(text: text, regex: typeBoolean))
@@ -96,7 +95,8 @@ struct RegularExpression {
         return data
     }
     
-    static func object(_ input: String, splitInput: [String]) -> JsonCollection? {
+    // 입력에 따른 JsonData생성
+    static func object(_ input: String, _ splitInput: [String]) -> JsonCollection? {
         if CheckInput.hasCurlyBrace(input) && CheckInput.hasSqaureBracket(input) == false {
             return JSONDic.init(makeJsonDic(input))
         } 
@@ -104,6 +104,7 @@ struct RegularExpression {
             let objArr = matches(in: input, by: typeAny)
             let jsonArr = JSONArr()
             var jsonDic = [String: JsonValue]()
+            
             for str in objArr {
                 jsonDic = makeJsonDic(str)
                 jsonArr.values.append(jsonDic)
