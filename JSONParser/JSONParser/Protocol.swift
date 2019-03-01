@@ -12,6 +12,7 @@ import Foundation
 protocol JsonValue {
     func typeInfo() -> Self
 }
+
  // JsonValue에 들어가는 값들의 타입을 확인
 extension JsonValue {
     func isSame<T>(val: T.Type) -> Bool {
@@ -35,6 +36,18 @@ extension Bool: JsonValue {
     func typeInfo() -> Bool {
         return self
     }
+}
+
+extension Dictionary: JsonValue where Key == String, Value == JsonValue {
+    func typeInfo() -> [String:JsonValue] {
+        return self
+    }
+}
+
+//---------------------------------------------------------------------------------
+
+protocol JsonCollection {
+    func countData() -> [String : Int]
 }
 
 
